@@ -3,140 +3,135 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EduVerse Horizon - Sistema Comercial Escalable</title>
+    <title>Metaverso Pedagógico Juliaca - Sistema Local</title>
     
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.9.1/nipplejs.min.js"></script>
     
     <style>
-      body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; background: #0a0f24; touch-action: none; }
+      body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; background: #0f172a; touch-action: none; }
       
-      /* --- INTERFAZ COMERCIAL DE BIENVENIDA --- */
+      /* --- HUB DE INICIO --- */
       #pantalla-inicio {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at center, #1a234a 0%, #080d22 100%);
-        display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
-        overflow-y: auto; padding: 20px; box-sizing: border-box; color: white;
+        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start; z-index: 9999;
+        padding: 20px; box-sizing: border-box; color: white;
       }
 
-      .titulo-inicio { font-size: 32px; font-weight: 800; background: linear-gradient(45deg, #00ffcc, #007bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; text-align: center; }
-      .subtitulo-inicio { color: #8fa0dd; margin-bottom: 25px; text-align: center; font-size: 14px; letter-spacing: 1px; }
+      .header-inicio { text-align: center; margin-bottom: 20px; flex-shrink: 0; }
+      .titulo-inicio { font-size: 30px; font-weight: 900; background: linear-gradient(45deg, #38bdf8, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 5px 0; }
+      .subtitulo-inicio { color: #94a3b8; margin: 0; font-size: 11px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
 
-      .selector-docentes {
-        display: flex; gap: 15px; margin-bottom: 25px; width: 100%;
-        max-width: 600px; justify-content: center; flex-wrap: wrap;
+      .zona-scroll-materias {
+        width: 100%; max-width: 700px; height: calc(100% - 150px); overflow-y: auto;
+        padding-right: 5px; box-sizing: border-box; margin-bottom: 15px;
       }
+      .zona-scroll-materias::-webkit-scrollbar { width: 6px; }
+      .zona-scroll-materias::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 4px; }
+
+      .selector-docentes { display: flex; gap: 15px; width: 100%; justify-content: center; flex-wrap: wrap; padding-bottom: 15px; }
 
       .tarjeta-docente {
-        background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 16px; cursor: pointer;
-        text-align: center; border: 2px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 28%; min-width: 140px; flex-grow: 1; backdrop-filter: blur(4px);
+        background: rgba(255, 255, 255, 0.04); padding: 18px; border-radius: 16px; cursor: pointer;
+        text-align: center; border: 2px solid rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.15); width: 28%; min-width: 150px; flex-grow: 1; backdrop-filter: blur(4px);
         position: relative; overflow: hidden;
       }
-      .tarjeta-docente:hover { background: rgba(255, 255, 255, 0.1); border-color: #00ffcc; }
-      .tarjeta-docente.activa { border-color: #00ffcc; background: rgba(0, 255, 204, 0.15); transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); }
-      .tarjeta-docente.bloqueada { opacity: 0.6; border: 2px dashed rgba(255,255,255,0.2); }
+      .tarjeta-docente:hover { background: rgba(56, 189, 248, 0.08); border-color: #38bdf8; transform: translateY(-3px); }
       
+      .badge-premium { position: absolute; top: 8px; right: 8px; background: #38bdf8; color: #000; font-size: 9px; padding: 2px 6px; border-radius: 20px; font-weight: bold; }
+      .badge-bloqueado { background: #ef4444 !important; color: white !important; }
+      .badge-espacio { background: #a855f7 !important; color: white !important; }
       .avatar-preview { font-size: 36px; margin-bottom: 6px; }
-      .badge-premium { background: linear-gradient(45deg, #ff00ea, #00e5ff); color: black; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-top: 5px; }
-      .badge-mult { background: #00ffcc; color: black; font-size: 10px; font-weight: bold; padding: 1px 5px; border-radius: 4px; position: absolute; top: 8px; right: 8px; }
 
-      .contenedor-botones-inicio { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
+      .footer-control-inicio { flex-shrink: 0; text-align: center; z-index: 10000; }
+      .btn-resetear { background: transparent; color: #64748b; border: none; padding: 6px 12px; cursor: pointer; font-size: 11px; text-align: center; border-radius: 8px; }
+      .btn-resetear:hover { color: #ef4444; background: rgba(239, 68, 68, 0.05); }
 
-      .btn-entrar {
-        background: #444; color: #888; border: none; padding: 16px; width: 100%;
-        font-size: 18px; border-radius: 50px; cursor: not-allowed; font-weight: bold;
-        transition: all 0.3s; box-sizing: border-box; letter-spacing: 1px;
-      }
-      .btn-entrar.listo { background: linear-gradient(90deg, #00ffcc, #007bff); color: white; cursor: pointer; box-shadow: 0 5px 25px rgba(0, 255, 204, 0.4); }
-      
-      .btn-resetear { background: transparent; color: #6c7a9c; border: 1px solid #232d4b; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 11px; transition: color 0.2s; }
-      .btn-resetear:hover { color: #ff3b30; }
-
-      /* --- HUD GAMIFICADO --- */
+      /* --- HUD --- */
       #hud-gamificado {
         position: absolute; top: 15px; right: 15px; z-index: 900; display: none;
-        flex-direction: column; gap: 8px; font-family: 'Segoe UI', system-ui; width: 180px;
+        flex-direction: column; gap: 6px; font-family: system-ui, sans-serif; width: 180px;
       }
       .hud-card {
-        background: rgba(10, 16, 38, 0.85); color: white; border: 1px solid rgba(255,255,255,0.15);
-        padding: 10px 14px; border-radius: 12px; font-weight: 700; font-size: 14px;
+        background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid rgba(255,255,255,0.15);
+        padding: 8px 12px; border-radius: 12px; font-weight: 700; font-size: 12px;
         backdrop-filter: blur(8px); display: flex; justify-content: space-between; align-items: center;
       }
-      .hud-xp-container { font-size: 11px; color: #aaa; flex-direction: column; align-items: stretch; gap: 4px; }
-      .barra-xp-bg { background: #222; height: 6px; border-radius: 3px; overflow: hidden; width: 100%; margin-top: 2px; }
-      .barra-xp-fill { background: linear-gradient(90deg, #00ffcc, #007bff); width: 0%; height: 100%; transition: width 0.4s ease; }
-      
-      .racha-badge { background: linear-gradient(45deg, #ff9500, #ff5e00) !important; animation: pulse 1.5s infinite; }
+      .hud-xp-container { font-size: 10px; color: #aaa; flex-direction: column; align-items: stretch; gap: 4px; }
+      .barra-xp-bg { background: #334155; height: 5px; border-radius: 3px; overflow: hidden; width: 100%; margin-top: 2px; }
+      .barra-xp-fill { background: linear-gradient(90deg, #38bdf8, #3b82f6); width: 0%; height: 100%; transition: width 0.4s ease; }
 
-      /* CONTROLADORES LATERALES */
-      #joystick-zone { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 110px; height: 110px; z-index: 900; display: none; border-radius: 50%; background: rgba(255,255,255,0.1); }
+      /* CONTROLES */
+      #joystick-zone { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 100px; height: 100px; z-index: 900; display: none; border-radius: 50%; background: rgba(255,255,255,0.1); }
       
       .btn-lateral {
-        position: absolute; z-index: 900; display: none; color: white; border: 1px solid rgba(255,255,255,0.2);
-        padding: 12px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.2s;
+        position: absolute; z-index: 900; display: none; color: white; border: 1px solid rgba(255,255,255,0.15);
+        padding: 10px 14px; border-radius: 12px; font-weight: bold; font-size: 12px; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.2s;
       }
-      #btn-volver { top: 15px; left: 15px; background: rgba(255, 61, 0, 0.2); border-color: rgba(255, 61, 0, 0.4); }
-      #btn-tienda-abrir { top: 75px; left: 15px; background: rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.5); }
-      #btn-rank-abrir { top: 135px; left: 15px; background: rgba(0, 123, 255, 0.2); border-color: rgba(0, 123, 255, 0.5); }
+      #btn-volver { top: 15px; left: 15px; background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); }
+      #btn-tienda-abrir { top: 70px; left: 15px; background: rgba(234, 179, 8, 0.2); border-color: rgba(234, 179, 8, 0.4); }
+      #btn-rank-abrir { top: 125px; left: 15px; background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.4); }
+      #btn-config-espacio-abrir { top: 180px; left: 15px; background: rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.5); display: none; }
 
-      /* --- MODALES UI GLASSMORPHISM --- */
+      /* --- MODALES --- */
       .panel-modal {
-        position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
-        width: 92%; max-width: 460px; background: rgba(15, 23, 53, 0.96); border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 24px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        z-index: 1000; display: none; flex-direction: column; box-sizing: border-box; color: white; backdrop-filter: blur(15px);
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 92%; max-width: 480px; background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 24px; padding: 22px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        z-index: 1000; display: none; flex-direction: column; box-sizing: border-box; color: white; backdrop-filter: blur(20px);
       }
       
-      .panel-titulo { font-weight: 800; font-size: 22px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; color: #00ffcc; display: flex; align-items: center; gap: 8px; }
-      .panel-cuerpo { font-size: 15px; line-height: 1.6; white-space: pre-wrap; margin-bottom: 20px; color: #cbd5e1; }
+      .panel-titulo { font-weight: 800; font-size: 18px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+      .panel-cuerpo { font-size: 14px; line-height: 1.5; white-space: pre-wrap; margin-bottom: 15px; color: #cbd5e1; }
       
-      /* Quizzes */
-      #contenedor-opciones { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
+      #contenedor-opciones { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
       .btn-opcion {
-        background: rgba(255,255,255,0.04); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 14px;
-        border-radius: 12px; font-size: 15px; cursor: pointer; transition: all 0.2s; text-align: left; font-weight: 500;
+        background: rgba(255,255,255,0.03); color: white; border: 1px solid rgba(255,255,255,0.08); padding: 12px 15px;
+        border-radius: 12px; font-size: 14px; cursor: pointer; transition: all 0.2s; text-align: left;
       }
-      .btn-opcion:hover { background: rgba(255,255,255,0.1); border-color: #007bff; }
-      .btn-opcion.correcta { background: rgba(40, 167, 69, 0.25); border-color: #28a745; color: #7cfc00; font-weight: bold; }
-      .btn-opcion.incorrecta { background: rgba(220, 53, 69, 0.25); border-color: #dc3545; color: #ff9999; }
-      #feedback-mensaje { font-weight: bold; text-align: center; min-height: 24px; margin-bottom: 15px; font-size: 14px; }
+      .btn-opcion:hover { background: rgba(255,255,255,0.08); border-color: #3b82f6; }
+      .btn-opcion.correcta { background: rgba(34, 197, 94, 0.25); border-color: #22c55e; color: #4ade80; font-weight: bold; }
+      .btn-opcion.incorrecta { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #fca5a5; }
+      #feedback-mensaje { font-weight: bold; text-align: center; min-height: 20px; margin-bottom: 10px; font-size: 13px; }
 
-      /* Estilo Comercial Tienda */
-      .lista-tienda { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; max-height: 220px; overflow-y: auto; padding-right: 4px; }
+      .lista-tienda { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; max-height: 250px; overflow-y: auto; }
       .item-tienda {
+        display: flex; flex-direction: column; gap: 8px;
+        background: rgba(255,255,255,0.02); padding: 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06);
+      }
+      .item-fila-superior { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+      .item-info div { font-weight: bold; font-size: 13px; }
+      .item-info span { font-size: 11px; color: #94a3b8; }
+      .btn-tienda-accion { padding: 8px 14px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 12px; align-self: flex-end; }
+      .btn-comprar { background: #eab308; color: black; }
+      .btn-comprar:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+      .btn-equipar { background: #3b82f6; color: white; }
+      .btn-equipado { background: #22c55e; color: white; cursor: default; }
+
+      .input-file-local { margin-top: 5px; font-size: 12px; color: #cbd5e1; }
+
+      .monetizacion-mock {
+        border-top: 1px solid rgba(255,255,255,0.12); padding-top: 12px;
         display: flex; justify-content: space-between; align-items: center;
-        background: rgba(255,255,255,0.03); padding: 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.05);
+        background: linear-gradient(90deg, rgba(236, 72, 153, 0.08), rgba(14, 165, 233, 0.05));
+        padding: 12px; border-radius: 14px; border: 1px solid rgba(236, 72, 153, 0.2);
       }
-      .item-info div { font-weight: bold; font-size: 15px; color: #fff; }
-      .item-info span { font-size: 12px; color: #94a3b8; }
-      .btn-tienda-accion { padding: 10px 16px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 13px; transition: transform 0.2s; }
-      .btn-tienda-accion:hover:not(:disabled) { transform: scale(1.05); }
-      .btn-comprar { background: #d4af37; color: black; }
-      .btn-equipar { background: #007AFF; color: white; }
-      .btn-equipado { background: #2E8B57; color: white; cursor: default; }
-      
-      /* SECCIÓN MONETIZACIÓN TIKTOK REFORMADA */
-      .monetizacion-tiktok-box { 
-        border-top: 1px solid rgba(255,255,255,0.15); padding-top: 18px; 
-        display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 14px;
+      .btn-tiktok {
+        background: linear-gradient(45deg, #ec4899, #38bdf8); color: white; border: none;
+        padding: 10px 14px; border-radius: 10px; font-weight: 900; cursor: pointer;
+        font-size: 12px; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
       }
-      .btn-tiktok-premium {
-        background: linear-gradient(90deg, #ff0050, #00f2fe); color: white; border: none;
-        padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-      }
-      .btn-tiktok-premium:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+      .btn-tiktok:disabled { background: #334155; color: #64748b; box-shadow: none; cursor: not-allowed; }
 
-      /* Clasificación */
-      .ranking-fila { display: flex; justify-content: space-between; padding: 10px 15px; border-radius: 10px; margin-bottom: 6px; background: rgba(255,255,255,0.02); align-items: center; font-size: 14px; }
-      .ranking-fila.usuario-actual { background: linear-gradient(90deg, rgba(0,255,204,0.15), rgba(0,123,255,0.15)); border: 1px solid #00ffcc; font-weight: bold; }
-      .rank-num { font-weight: 800; width: 30px; color: #00ffcc; }
+      .ranking-fila { display: flex; justify-content: space-between; padding: 10px 12px; border-radius: 10px; margin-bottom: 5px; background: rgba(255,255,255,0.02); font-size: 13px; }
+      .ranking-fila.usuario-actual { background: linear-gradient(90deg, rgba(56,189,248,0.15), rgba(59,130,246,0.15)); border: 1px solid #38bdf8; font-weight: bold; }
+      .rank-num { font-weight: 800; width: 25px; color: #38bdf8; }
 
-      .acciones-footer { display: flex; gap: 10px; margin-top: 10px; }
-      .btn-primario { background: linear-gradient(90deg, #007bff, #0056b3); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1; }
-      .btn-secundario { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1; }
-
-      @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+      .acciones-footer { display: flex; gap: 10px; margin-top: 5px; }
+      .btn-primario { background: linear-gradient(90deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1; font-size: 13px; }
+      .btn-secundario { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1; font-size: 13px; }
     </style>
 
     <script>
@@ -150,7 +145,7 @@
           const zone = document.getElementById('joystick-zone');
           zone.style.display = 'block';
           if(this.manager) this.manager.destroy();
-          this.manager = nipplejs.create({ zone: zone, mode: 'static', position: { left: '50%', top: '50%' }, color: 'white', size: 90 });
+          this.manager = nipplejs.create({ zone: zone, mode: 'static', position: { left: '50%', top: '50%' }, color: 'white', size: 85 });
           this.manager.on('start', () => { this.moviendo = true; });
           this.manager.on('end', () => { this.moviendo = false; this.dirX = 0; this.dirY = 0; });
           this.manager.on('move', (evt, data) => { this.dirX = data.vector.x; this.dirY = data.vector.y; });
@@ -178,18 +173,699 @@
   </head>
   <body>
 
+    <!-- INTERFAZ CENTRAL HUB DE ENTRADA -->
     <div id="pantalla-inicio">
-      <div style="font-size: 11px; font-weight: bold; color: #00ffcc; letter-spacing: 3px; margin-bottom: 5px;">EDTECH ECOSYSTEM PLATINUM</div>
-      <h1 class="titulo-inicio">EduVerse Pro</h1>
-      <p class="subtitulo-inicio">PANEL ACADÉMICO MULTIVERSO</p>
+      <div class="header-inicio">
+        <div style="font-size: 10px; font-weight: bold; color: #38bdf8; letter-spacing: 3px;">SISTEMA PEDAGÓGICO LOCAL</div>
+        <h1 class="titulo-inicio">Metaverso Pedagógico Juliaca</h1>
+        <p class="subtitulo-inicio">Toca un curso para acceder inmediatamente al entorno 3D</p>
+      </div>
       
-      <div class="selector-docentes" id="contenedor-materias-dinamico"></div>
+      <div class="zona-scroll-materias">
+        <div class="selector-docentes" id="contenedor-materias-dinamico"></div>
+      </div>
 
-      <div class="contenedor-botones-inicio">
-        <button id="btn-iniciar" class="btn-entrar" onclick="activarEntorno()">Entrar al Espacio 3D</button>
-        <button class="btn-resetear" onclick="reiniciarProgresoTotal()">Formatear Historial del Sistema 🔄</button>
+      <div class="footer-control-inicio">
+        <button class="btn-resetear" onclick="reiniciarProgresoTotal()">Restablecer Base de Datos 🔄</button>
       </div>
     </div>
 
-    <button id="btn-volver
+    <!-- HUD FLOTANTE -->
+    <button id="btn-volver" class="btn-lateral" onclick="volverMenuPrincipal()">🔙 Salir</button>
+    <button id="btn-tienda-abrir" class="btn-lateral" onclick="abrirTienda()">🏪 Mercado</button>
+    <button id="btn-rank-abrir" class="btn-lateral" onclick="abrirRanking()">🏆 Ránking</button>
+    <button id="btn-config-espacio-abrir" class="btn-lateral" onclick="abrirConfiguracionEspacioDirecto()">⚙️ Ajustar Mi Espacio</button>
+
+    <div id="hud-gamificado">
+      <div class="hud-card hud-xp-container">
+        <div style="display:flex; justify-content:space-between; width:100%;">
+          <span>NIVEL <strong id="hud-txt-nivel" style="color:#38bdf8;">1</strong></span>
+          <span id="hud-txt-xp-num" style="font-size:9px;">0 / 100 XP</span>
+        </div>
+        <div class="barra-xp-bg"><div id="hud-barra-xp" class="barra-xp-fill"></div></div>
+      </div>
+      <div class="hud-card" id="hud-card-racha" style="display:none; background: linear-gradient(45deg, #f97316, #ea580c);">
+        <span>🔥 RACHA:</span><span id="hud-txt-racha">x1</span>
+      </div>
+      <div class="hud-card" style="border-color:#eab308;"><span>🪙 EduCoins:</span><span id="hud-txt-monedas" style="color:#eab308;">0</span></div>
+      <div class="hud-card" style="border-color:#38bdf8;"><span>💎 Gemas Pro:</span><span id="hud-txt-gemas" style="color:#38bdf8;">0</span></div>
+    </div>
+
+    <div id="joystick-zone"></div>
     
+    <!-- MODAL DE PREGUNTAS -->
+    <div id="panel-lectura" class="panel-modal">
+      <div id="lectura-titulo" class="panel-titulo">Materia</div>
+      <div id="lectura-cuerpo" class="panel-cuerpo">Pregunta...</div>
+      <div id="contenedor-opciones"></div>
+      <div id="feedback-mensaje"></div>
+      <div class="acciones-footer">
+        <button id="btn-siguiente" class="btn-primario" style="display:none;" onclick="siguienteEjercicio()">Siguiente Pregunta ➡️</button>
+        <button class="btn-secundario" onclick="cerrarModalPregunta()">Cerrar Aula ✖️</button>
+      </div>
+    </div>
+
+    <!-- MODAL TIENDA -->
+    <div id="panel-tienda" class="panel-modal">
+      <div class="panel-titulo">🏪 Mercado de Personalización</div>
+      <div class="lista-tienda" id="contenedor-tienda-items"></div>
+      <div class="monetizacion-mock">
+        <div>
+          <div style="font-weight:bold; font-size:12px; color:#ffffff;">¿Requieres Gemas Pro? 💎</div>
+          <div style="font-size:10px; color:#a4b3c6; margin-top:1px;" id="txt-contador-tiktok">Mira nuestro canal para obtener +25 Gemas</div>
+        </div>
+        <button id="btn-recompensa-tiktok" class="btn-tiktok" onclick="ejecutarMecanicaTiktok()">Ver Canal 🎬</button>
+      </div>
+      <div class="acciones-footer" style="margin-top:10px;"><button class="btn-secundario" onclick="cerrarTienda()">Cerrar ✖️</button></div>
+    </div>
+
+    <!-- MODAL "MI ESPACIO" COMPLEMENTO LOCAL -->
+    <div id="panel-biblioteca" class="panel-modal">
+      <div class="panel-titulo">🌌 Laboratorio Virtual Personalizable</div>
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">Desbloquea fases con tus Gemas y sube tus propios archivos educativos locales.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 10px;" id="contenedor-fases-biblioteca">
+        <div class="item-tienda">
+          <div class="item-fila-superior">
+            <div class="item-info"><div>Fase 1: Panel de Infografías 🖼️</div><span id="txt-fase-1">Carga imágenes locales directamente.</span></div>
+            <button id="btn-fase-1" class="btn-tienda-accion btn-comprar" onclick="procesarFaseBiblioteca(1)">Activar (30 💎)</button>
+          </div>
+          <div id="controles-fase-1" style="display:none; width:100%; margin-top:5px;">
+            <input type="file" id="file-imagen" class="input-file-local" accept="image/*" onchange="cargarImagenMundo(event)">
+          </div>
+        </div>
+        <div class="item-tienda">
+          <div class="item-fila-superior">
+            <div class="item-info"><div>Fase 2: Ecran Proyector 🎬</div><span id="txt-fase-2">Proyecta tus videos mp4 locales.</span></div>
+            <button id="btn-fase-2" class="btn-tienda-accion btn-comprar" onclick="procesarFaseBiblioteca(2)">Bloqueado 🔒</button>
+          </div>
+          <div id="controles-fase-2" style="display:none; width:100%; margin-top:5px;">
+            <input type="file" id="file-video" class="input-file-local" accept="video/mp4" onchange="cargarVideoMundo(event)">
+          </div>
+        </div>
+        <div class="item-tienda">
+          <div class="item-fila-superior">
+            <div class="item-info"><div>Fase 3: Banda Sonora Ambiental 🎵</div><span id="txt-fase-3">Audios de concentración mp3.</span></div>
+            <button id="btn-fase-3" class="btn-tienda-accion btn-comprar" onclick="procesarFaseBiblioteca(3)">Bloqueado 🔒</button>
+          </div>
+          <div id="controles-fase-3" style="display:none; width:100%; margin-top:5px;">
+            <input type="file" id="file-audio" class="input-file-local" accept="audio/*" onchange="cargarAudioMundo(event)">
+          </div>
+        </div>
+      </div>
+      <div id="biblioteca-digital-preview" style="margin-top:10px; font-size:11px; color:#38bdf8; text-align:center; font-style:italic;"></div>
+      <div class="acciones-footer" style="margin-top:10px;">
+        <button id="btn-entrar-mi-espacio" class="btn-primario" style="display:none;" onclick="entrarAlAulaConEspacioActivo()">Entrar al Entorno ➡️</button>
+        <button class="btn-secundario" onclick="cerrarBiblioteca()">Volver ✖️</button>
+      </div>
+    </div>
+
+    <!-- MODAL RANKING -->
+    <div id="panel-ranking" class="panel-modal">
+      <div class="panel-titulo">🏆 Cuadro de Honor Escolar</div>
+      <div id="contenedor-ranking-filas"></div>
+      <div class="acciones-footer"><button class="btn-secundario" onclick="cerrarRanking()">Salir ✖️</button></div>
+    </div>
+
+    <!-- ESCENA 3D A-FRAME -->
+    <a-scene id="escena-3d" background="color: #cbd5e1">
+      <a-light type="ambient" color="#ffffff" intensity="1.3"></a-light>
+      <a-light type="directional" color="#ffffff" intensity="0.6" position="-3 6 4"></a-light>
+      <a-light type="directional" color="#38bdf8" intensity="0.3" position="3 5 -2"></a-light>
+
+      <!-- Arquitectura Clara del Aula -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="12" height="14" color="#f1f5f9"></a-plane>
+      <a-plane position="0 4 0" rotation="90 0 0" width="12" height="14" color="#e2e8f0"></a-plane>
+      <a-box position="0 2 -7" width="12" height="4" depth="0.2" color="#cbd5e1"></a-box>
+      <a-box position="0 2 7" width="12" height="4" depth="0.2" color="#cbd5e1"></a-box>
+      <a-box position="-6 2 0" width="0.2" height="4" depth="14" color="#94a3b8"></a-box>
+      <a-box position="6 1 0" width="0.2" height="2" depth="14" color="#94a3b8"></a-box>
+
+      <!-- Paneles Personales Laterales -->
+      <a-plane id="cuadro-estudio" position="-5.8 2.2 -2" rotation="0 90 0" width="2.5" height="1.8" color="#ffffff" material="shader: flat; side: double;"></a-plane>
+      <a-box position="-5.85 2.2 -2" width="0.1" height="2" depth="2.7" color="#3b82f6"></a-box>
+
+      <a-video id="cine-estudio" position="5.8 2.2 -2" rotation="0 -90 0" width="3.2" height="1.8" color="#334155" src=""></a-video>
+      <a-box position="5.85 2.2 -2" width="0.1" height="2" depth="3.4" color="#a855f7"></a-box>
+
+      <!-- PIZARRA OPTIMIZADA: Fondo obsidiana ultra-oscuro antirreflejos para evitar parpadeos al moverse -->
+      <a-plane id="pizarra-3d" class="interactiva" position="0 2.2 -6.8" width="6.5" height="2.6" color="#020617" material="shader: flat; side: double;"
+               animation__hover="property: material.color; to: #0f172a; startEvents: mouseenter; dur: 150"
+               animation__leave="property: material.color; to: #020617; startEvents: mouseleave; dur: 150"></a-plane>
+      <a-box position="0 2.2 -6.86" width="6.7" height="2.8" depth="0.1" color="#0ea5e9"></a-box>
+      
+      <!-- Texto de alto contraste blanco/cian óptimo para lectura en movimiento -->
+      <a-text id="texto-pizarra-3d" value="CARGANDO ENTORNO..." position="0 2.4 -6.7" align="center" width="5.5" color="#ffffff" font="exo2bold" baseline="top"></a-text>
+
+      <!-- MURO DE DIPLOMAS (Pared lateral izquierda) -->
+      <a-entity id="muro-diplomas" position="-5.8 2.5 1.5" rotation="0 90 0">
+        <a-text value="GALERÍA DE LOGROS" position="0 0.8 0" align="center" width="3" color="#1e293b" font="exo2bold"></a-text>
+        
+        <!-- Marco Diploma Matemática -->
+        <a-plane id="3d-diploma-mat" position="-1 0 0" width="0.7" height="0.5" color="#334155" material="shader: flat;">
+          <a-text id="txt-3d-diploma-mat" value="BLOQUEADO" align="center" width="1.2" color="#94a3b8" position="0 0 0.01"></a-text>
+        </a-plane>
+        <!-- Marco Diploma Comunicación -->
+        <a-plane id="3d-diploma-com" position="0 0 0" width="0.7" height="0.5" color="#334155" material="shader: flat;">
+          <a-text id="txt-3d-diploma-com" value="BLOQUEADO" align="center" width="1.2" color="#94a3b8" position="0 0 0.01"></a-text>
+        </a-plane>
+        <!-- Marco Diploma Arte -->
+        <a-plane id="3d-diploma-art" position="1 0 0" width="0.7" height="0.5" color="#334155" material="shader: flat;">
+          <a-text id="txt-3d-diploma-art" value="BLOQUEADO" align="center" width="1.2" color="#94a3b8" position="0 0 0.01"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Escritorio del Profesor -->
+      <a-entity position="-3 0 -5">
+        <a-box position="0 0.8 0" width="2" height="0.05" depth="0.8" color="#334155"></a-box>
+        <a-box position="0 0.4 0.38" width="1.9" height="0.8" depth="0.05" color="#475569"></a-box>
+        <a-entity id="contenedor-docentes" position="0 0.4 -0.6">
+          <a-entity id="docente-ada" visible="false"><a-sphere position="0 0.9 0" radius="0.15" color="#ec4899"></a-sphere><a-cylinder position="0 0.5 0" radius="0.2" height="0.6" color="#3b82f6"></a-cylinder></a-entity>
+          <a-entity id="docente-alan" visible="false"><a-box position="0 0.9 0" width="0.25" height="0.3" depth="0.25" color="#0ea5e9"></a-box><a-box position="0 0.5 0" width="0.4" height="0.6" depth="0.2" color="#334155"></a-box></a-entity>
+          <a-entity id="docente-bot" visible="false"><a-box position="0 0.9 0" width="0.3" height="0.3" depth="0.3" color="#f8fafc"></a-box><a-cylinder position="0 0.5 0" radius="0.15" height="0.6" color="#64748b"></a-cylinder></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Mobiliario del Alumno -->
+      <a-entity id="bloque-carpetas">
+        <a-entity id="pupitre-propio" position="0 0 2.5">
+          <a-box id="pupitre-tablero" position="0 0.7 0" width="1" height="0.04" depth="0.7" color="#475569"></a-box>
+          <a-cylinder position="-0.45 0.35 -0.3" radius="0.02" height="0.7" color="#334155"></a-cylinder>
+          <a-cylinder position="0.45 0.35 -0.3" radius="0.02" height="0.7" color="#334155"></a-cylinder>
+          <a-box position="0 0.45 0.65" width="0.45" height="0.03" depth="0.45" color="#64748b"></a-box>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="camara-rig" position="0 1.6 4.5" joystick-movement>
+        <a-camera id="camara-vista" look-controls="touchEnabled: true;">
+          <a-entity cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .interactiva" position="0 0 -1"></a-entity>
+        </a-camera>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      // ELEMENTOS INTERFAZ
+      const pantallaInicio = document.getElementById('pantalla-inicio');
+      const escena = document.getElementById('escena-3d');
+      const panelLectura = document.getElementById('panel-lectura');
+      const panelTienda = document.getElementById('panel-tienda');
+      const panelBiblioteca = document.getElementById('panel-biblioteca');
+      const panelRanking = document.getElementById('panel-ranking');
+      const joystickZone = document.getElementById('joystick-zone');
+      const pizarra3D = document.getElementById('pizarra-3d');
+      const btnVolver = document.getElementById('btn-volver');
+      const btnTiendaAbrir = document.getElementById('btn-tienda-abrir');
+      const btnRankAbrir = document.getElementById('btn-rank-abrir');
+      const btnConfigEspacioAbrir = document.getElementById('btn-config-espacio-abrir');
+      const hudGamificado = document.getElementById('hud-gamificado');
+      const rigJugador = document.querySelector('#camara-rig');
+      
+      // ESTRUCTURA DE DATOS LOCALES CON PERSISTENCIA
+      let datosUsuario = {
+        xp: 0, nivel: 1, monedas: 0, gemas: 10, racha: 0, puntosAcumulados: 0,
+        itemsComprados: ['estandar'], itemEquipado: 'estandar',
+        temasDesbloqueados: ['matematica', 'comunicacion', 'arte'],
+        fechaTiktok: '', contadorTiktok: 0,
+        faseBiblioteca: 0, 
+        progresoMaterias: { matematica: 0, comunicacion: 0, arte: 0, robotica_premium: 0, finanzas_premium: 0 }
+      };
+
+      let docenteElegido = null;
+      let materiaElegida = null;
+      let contenidoActual = null;
+      let preguntaRespondida = false;
+      const MAX_TIKTOK_DIARIO = 2;
+      const costosBiblioteca = { 1: 30, 2: 60, 3: 90 };
+
+      const CatalogoMaterias = [
+        { id: 'matematica', nombre: 'Matemáticas AI', docente: 'alan', icon: '📐', desc: 'Lógica e Incrementos Dinámicos', premium: false, costoGemas: 0, multiplicador: 1 },
+        { id: 'comunicacion', nombre: 'Comunicación', docente: 'ada', icon: '📚', desc: 'Análisis Crítico y Semántica', premium: false, costoGemas: 0, multiplicador: 1 },
+        { id: 'arte', nombre: 'Arte Digital', docente: 'bot', icon: '👾', desc: 'Color y Perspectiva', premium: false, costoGemas: 0, multiplicador: 1 },
+        { id: 'robotica_premium', nombre: 'Robótica & IA 🚀', docente: 'bot', icon: '💻', desc: 'Sistemas Autónomos • Puntos x2', premium: true, costoGemas: 25, multiplicador: 2 },
+        { id: 'finanzas_premium', nombre: 'Neuro-Finanzas 📈', docente: 'alan', icon: '💰', desc: 'Modelación de Activos • Puntos x3', premium: true, costoGemas: 50, multiplicador: 3 },
+        { id: 'mi_espacio', nombre: 'Mi Espacio Pro 🌌', docente: 'bot', icon: '🧪', desc: 'Laboratorio de Recursos Locales', premium: true, costoGemas: 30, multiplicador: 1, esEspacioEspecial: true }
+      ];
+
+      // ARTÍCULOS Y DIPLOMAS DE LA TIENDA (Los diplomas requieren un esfuerzo continuado de varios días)
+      const ItemsCatalogo = [
+        { id: 'estandar', tipo: 'skin', nombre: 'Madera de Aula Base', costo: 0, color: '#475569' },
+        { id: 'neon_verde', tipo: 'skin', nombre: 'Matriz Neón ⚡', costo: 40, color: '#22c55e' },
+        { id: 'aurum', tipo: 'skin', nombre: 'Fusión Estelar ⭐', costo: 150, color: '#ec4899' },
+        
+        // ITEMS DE ALTO VALOR (DIPLOMAS)
+        { id: 'diploma_mat', tipo: 'diploma', nombre: '📜 Diploma: Excelencia Matemática AI', costo: 1200, target3D: '3d-diploma-mat', txt3D: 'txt-3d-diploma-mat', msg: 'CIENCIAS e IA\n\nEXCELENCIA' },
+        { id: 'diploma_com', tipo: 'diploma', nombre: '📜 Diploma: Experto en Lingüística y Retórica', costo: 1200, target3D: '3d-diploma-com', txt3D: 'txt-3d-diploma-com', msg: 'ALTA RETORICA\n\nEXCELENCIA' },
+        { id: 'diploma_art', tipo: 'diploma', nombre: '📜 Diploma: Maestro de Arte Computacional', costo: 1200, target3D: '3d-diploma-art', txt3D: 'txt-3d-diploma-art', msg: 'ARTE DIGITAL\n\nEXCELENCIA' }
+      ];
+
+      const bancoCurricular = {
+        comunicacion: [
+          { titulo: "Comunicación Niv. 1: Ortografía", cuerpo: "Identifica cuál de las siguientes palabras es esdrújula:", opciones: ["Canción", "Lámpara", "Carátula", "Árbol"], correcta: 1 },
+          { titulo: "Comunicación Niv. 2: Conectores", cuerpo: "Completa:\n'Estudió mucho, _______ no logró la nota máxima.'", opciones: ["por lo tanto", "además", "sin embargo", "porque"], correcta: 2 },
+          { titulo: "Comunicación Niv. 3: Retórica", cuerpo: "¿Qué figura literaria consiste en exagerar desmesuradamente un hecho?", opciones: ["Metáfora", "Hipérbole", "Anáfora", "Epíteto"], correcta: 1 },
+          { titulo: "Comunicación Niv. 4: Sintaxis", cuerpo: "Qué es el núcleo del sujeto en: 'El viejo motor de vapor falló'", opciones: ["viejo", "motor", "vapor", "falló"], correcta: 1 }
+        ],
+        arte: [
+          { titulo: "Arte Niv. 1: Psicología del Color", cuerpo: "¿Qué color transmite fundamentalmente serenidad, frialdad y estabilidad?", opciones: ["Rojo", "Amarillo", "Azul", "Naranja"], correcta: 2 },
+          { titulo: "Arte Niv. 2: Composición", cuerpo: "La regla de tercios consiste en dividir el lienzo en una cuadrícula de cuántas secciones:", opciones: ["2x2", "4x4", "3x3", "5x5"], correcta: 2 },
+          { titulo: "Arte Niv. 3: Técnicas", cuerpo: "¿Qué corriente artística rompe con la perspectiva tradicional y usa formas geométricas?", opciones: ["Impresionismo", "Cubismo", "Surrealismo", "Barroco"], correcta: 1 }
+        ],
+        robotica_premium: [
+          { titulo: "Robótica Niv. 1: Lógica de Control", cuerpo: "¿Cuál es el propósito principal de un bucle condicional en un robot?", opciones: ["Detener el flujo de energía", "Repetir instrucciones según los sensores", "Ampliar la memoria física", "Formatear firmware"], correcta: 1 },
+          { titulo: "Robótica Niv. 2: Actuadores", cuerpo: "¿Qué componente convierte la energía eléctrica en movimiento mecánico angular preciso?", opciones: ["Sensor Ultrasónico", "Servomotor", "Microcontrolador", "Transistor"], correcta: 1 }
+        ],
+        finanzas_premium: [
+          { titulo: "Finanzas Niv. 1: Capitalización", cuerpo: "Reinvertir continuamente los intereses generados crea un efecto matemático llamado:", opciones: ["Interés Simple", "Interés Compuesto", "Especulación Comercial", "Amortización Lineal"], correcta: 1 },
+          { titulo: "Finanzas Niv. 2: Riesgo", cuerpo: "A menor liquidez y mayor riesgo en un activo financiero, por lo general se espera:", opciones: ["Menor rendimiento", "Mayor rendimiento potencial", "Retorno garantizado", "Cero volatilidad"], correcta: 1 }
+        ]
+      };
+
+      function generarMatematicaGradual(indice) {
+        let nivelActual = indice + 1;
+        let titulo = `Matemáticas Avanzadas - Nivel Gradual ${nivelActual}`;
+        let multiplicadorDificultad = 2 + Math.floor(indice / 2);
+        let x = 3 + indice; 
+        let b = 5 + Math.floor(Math.random() * 10);
+        let c = (multiplicadorDificultad * x) + b;
+        
+        let cuerpo = `Resuelve para hallar el valor exacto de 'x' en el ejercicio lineal de dificultad nivel ${nivelActual}:\n\n${multiplicadorDificultad}x + ${b} = ${c}`;
+        let respuestas = [`x = ${x}`, `x = ${x + 2}`, `x = ${x - 1}`, `x = ${x + 1}`];
+        
+        let orden = [0,1,2,3].sort(() => Math.random() - 0.5);
+        return { titulo, cuerpo, opciones: orden.map(i => respuestas[i]), correcta: orden.indexOf(0), indexId: indice };
+      }
+
+      window.onload = () => {
+        escena.pause();
+        const guardado = localStorage.getItem('eduverse_local_v7');
+        if (guardado) {
+          try {
+            const datosParseados = JSON.parse(guardado);
+            if(datosParseados.progresoMaterias) datosUsuario = datosParseados;
+          } catch(e) { console.error("Error al restaurar datos."); }
+        }
+        actualizarHUDVisual();
+        actualizarMundoEntorno3D();
+        renderizarSelectorMaterias();
+      };
+
+      function guardarDatosNavegador() {
+        localStorage.setItem('eduverse_local_v7', JSON.stringify(datosUsuario));
+      }
+
+      function reiniciarProgresoTotal() {
+        if(confirm("¿Seguro que deseas reiniciar tu progreso, diplomas y niveles locales por completo?")) {
+          localStorage.removeItem('eduverse_local_v7');
+          location.reload();
+        }
+      }
+
+      function actualizarHUDVisual() {
+        document.getElementById('hud-txt-nivel').innerText = datosUsuario.nivel;
+        document.getElementById('hud-txt-monedas').innerText = datosUsuario.monedas;
+        document.getElementById('hud-txt-gemas').innerText = datosUsuario.gemas;
+        document.getElementById('hud-txt-xp-num').innerText = `${datosUsuario.xp} / 100 XP`;
+        document.getElementById('hud-barra-xp').style.width = `${datosUsuario.xp}%`;
+
+        const rachaCard = document.getElementById('hud-card-racha');
+        if (datosUsuario.racha >= 2) {
+          rachaCard.style.display = 'flex';
+          document.getElementById('hud-txt-racha').innerText = `x${datosUsuario.racha}`;
+        } else { rachaCard.style.display = 'none'; }
+      }
+
+      // ACTUALIZA ENTORNO, MUEBLES Y EL MURO DE DIPLOMAS ADQUIRIDOS
+      function actualizarMundoEntorno3D() {
+        // 1. Color del pupitre
+        const skinItem = ItemsCatalogo.find(i => i.id === datosUsuario.itemEquipado);
+        const tablero3D = document.getElementById('pupitre-tablero');
+        if (tablero3D && skinItem) tablero3D.setAttribute('color', skinItem.color);
+
+        // 2. Renderización de Diplomas en el Muro 3D
+        ItemsCatalogo.forEach(item => {
+          if(item.tipo === 'diploma') {
+            const elPlano = document.getElementById(item.target3D);
+            const elTexto = document.getElementById(item.txt3D);
+            if(elPlano && elTexto) {
+              if(datosUsuario.itemsComprados.includes(item.id)) {
+                elPlano.setAttribute('color', '#eab308'); // Dorado brillante
+                elTexto.setAttribute('value', item.msg);
+                elTexto.setAttribute('color', '#020617'); // Texto oscuro legible
+              } else {
+                elPlano.setAttribute('color', '#334155'); // Gris apagado
+                elTexto.setAttribute('value', "BLOQUEADO");
+                elTexto.setAttribute('color', '#94a3b8');
+              }
+            }
+          }
+        });
+      }
+
+      function renderizarSelectorMaterias() {
+        const contenedor = document.getElementById('contenedor-materias-dinamico');
+        contenedor.innerHTML = '';
+
+        CatalogoMaterias.forEach(materia => {
+          const div = document.createElement('div');
+          const esDesbloqueado = datosUsuario.temasDesbloqueados.includes(materia.id);
+          div.className = `tarjeta-docente`;
+          div.onclick = () => procesarAccesoMateriaDirecto(materia.id);
+
+          let badgeHtml = '';
+          if(materia.esEspacioEspecial) {
+            badgeHtml = `<span class="badge-premium ${esDesbloqueado?'badge-espacio':'badge-bloqueado'}">${esDesbloqueado ? 'PRO' : materia.costoGemas+' 💎'}</span>`;
+          } else if (materia.premium) {
+            badgeHtml = `<span class="badge-premium ${esDesbloqueado ? '' : 'badge-bloqueado'}">${esDesbloqueado ? 'PREMIUM' : materia.costoGemas + ' 💎'}</span>`;
+          }
+
+          div.innerHTML = `${badgeHtml}<div class="avatar-preview">${materia.icon}</div><div style="font-weight:bold; font-size:13px;">${materia.nombre}</div><div style="font-size:10px; color:#94a3b8; margin-top:2px;">${materia.desc}</div>`;
+          contenedor.appendChild(div);
+        });
+      }
+
+      function procesarAccesoMateriaDirecto(idMateria) {
+        const materiaConfig = CatalogoMaterias.find(m => m.id === idMateria);
+        const yaDesbloqueada = datosUsuario.temasDesbloqueados.includes(idMateria);
+
+        if (materiaConfig.premium && !yaDesbloqueada) {
+          if (confirm(`¿Desbloquear ${materiaConfig.nombre} por ${materiaConfig.costoGemas} Gemas Pro?`)) {
+            if (datosUsuario.gemas >= materiaConfig.costoGemas) {
+              datosUsuario.gemas -= materiaConfig.costoGemas;
+              datosUsuario.temasDesbloqueados.push(idMateria);
+              guardarDatosNavegador();
+              actualizarHUDVisual();
+              renderizarSelectorMaterias();
+              
+              materiaElegida = idMateria;
+              docenteElegido = materiaConfig.docente;
+              evaluarAperturaFlujo(idMateria);
+            } else { alert("Gemas insuficientes."); }
+          }
+          return;
+        }
+
+        materiaElegida = idMateria;
+        docenteElegido = materiaConfig.docente;
+        evaluarAperturaFlujo(idMateria);
+      }
+
+      function evaluarAperturaFlujo(idMateria) {
+        if(idMateria === 'mi_espacio') {
+          actualizarInterfazBiblioteca();
+          document.getElementById('btn-entrar-mi-espacio').style.display = 'block';
+          panelBiblioteca.style.display = 'flex';
+        } else {
+          activarEntorno();
+        }
+      }
+
+      function activarEntorno() {
+        ['ada', 'alan', 'bot'].forEach(id => document.getElementById(`docente-${id}`).setAttribute('visible', 'false'));
+        document.getElementById(`docente-${docenteElegido}`).setAttribute('visible', 'true');
+        
+        if(materiaElegida === 'mi_espacio') {
+          document.getElementById('texto-pizarra-3d').setAttribute('value', "LABORATORIO PRO EN VIVO\n\nEntorno listo. Modifica tus recursos desde el panel.");
+          btnConfigEspacioAbrir.style.display = 'block';
+        } else {
+          prepararPizarra(materiaElegida);
+          btnConfigEspacioAbrir.style.display = 'none';
+        }
+        
+        pantallaInicio.style.display = 'none';
+        btnVolver.style.display = 'block'; btnTiendaAbrir.style.display = 'block'; btnRankAbrir.style.display = 'block';
+        hudGamificado.style.display = 'flex';
+        escena.play(); 
+        rigJugador.components['joystick-movement'].activar();
+      }
+
+      function entrarAlAulaConEspacioActivo() {
+        panelBiblioteca.style.display = 'none';
+        activarEntorno();
+      }
+
+      function abrirConfiguracionEspacioDirecto() {
+        actualizarInterfazBiblioteca();
+        document.getElementById('btn-entrar-mi-espacio').style.display = 'none';
+        panelBiblioteca.style.display = 'flex';
+        congelarMundo3D();
+      }
+
+      function prepararPizarra(materia) {
+        let indiceActual = datosUsuario.progresoMaterias[materia] || 0;
+
+        if (materia === 'matematica') {
+          contenidoActual = generarMatematicaGradual(indiceActual);
+          document.getElementById('texto-pizarra-3d').setAttribute('value', `${contenidoActual.titulo}\n\n(Haz clic en la pizarra para evaluar)`);
+        } else {
+          let pool = bancoCurricular[materia] || [];
+          
+          if (indiceActual >= pool.length) {
+            contenidoActual = null;
+            document.getElementById('texto-pizarra-3d').setAttribute('value', "EXCELENCIA ALCANZADA\n\n¡Has completado todos los ejercicios disponibles de esta asignatura!");
+          } else {
+            contenidoActual = pool[indiceActual];
+            contenidoActual.indexId = indiceActual;
+            document.getElementById('texto-pizarra-3d').setAttribute('value', `${contenidoActual.titulo}\n\n(Haz clic en la pizarra para evaluar)`);
+          }
+        }
+      }
+
+      pizarra3D.addEventListener('click', () => {
+        if(materiaElegida === 'mi_espacio' || !contenidoActual) return; 
+        preguntaRespondida = false;
+        document.getElementById('lectura-titulo').innerText = contenidoActual.titulo;
+        document.getElementById('lectura-cuerpo').innerText = contenidoActual.cuerpo;
+        document.getElementById('feedback-mensaje').innerText = "";
+        document.getElementById('btn-siguiente').style.display = 'none';
+        
+        const contenedor = document.getElementById('contenedor-opciones');
+        contenedor.innerHTML = '';
+        
+        contenidoActual.opciones.forEach((opcion, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'btn-opcion'; btn.innerText = opcion;
+          btn.onclick = () => evaluarRespuesta(index, btn);
+          contenedor.appendChild(btn);
+        });
+
+        panelLectura.style.display = 'flex';
+        congelarMundo3D();
+      });
+
+      function evaluarRespuesta(indexSel, boton) {
+        if (preguntaRespondida) return;
+        preguntaRespondida = true;
+        
+        const feedback = document.getElementById('feedback-mensaje');
+        const botones = document.querySelectorAll('.btn-opcion');
+        const temaConfig = CatalogoMaterias.find(m => m.id === materiaElegida);
+        const mult = temaConfig ? temaConfig.multiplicador : 1;
+
+        if (indexSel === contenidoActual.correcta) {
+          boton.classList.add('correcta'); datosUsuario.racha++;
+          datosUsuario.progresoMaterias[materiaElegida]++;
+
+          let bonusRacha = 1 + (datosUsuario.racha * 0.1);
+          let monedasGanas = Math.round(15 * bonusRacha * mult);
+          let xpGana = Math.round(20 * mult);
+
+          datosUsuario.monedas += monedasGanas; datosUsuario.xp += xpGana;
+          datosUsuario.puntosAcumulados += Math.round(100 * mult);
+          feedback.style.color = "#4ade80";
+          feedback.innerText = `¡Correcto! Ganas +${monedasGanas} EduCoins y +${xpGana} XP. Avanzas linealmente de nivel.`;
+
+          if (datosUsuario.xp >= 100) {
+            datosUsuario.nivel++; datosUsuario.xp -= 100; datosUsuario.gemas += 5;
+            alert(`¡Subiste de Nivel! Ahora eres Nivel ${datosUsuario.nivel}. +5 Gemas Pro 💎`);
+          }
+        } else {
+          boton.classList.add('incorrecta');
+          botones[contenidoActual.correcta].classList.add('correcta');
+          datosUsuario.racha = 0;
+          feedback.style.color = "#ef4444";
+          feedback.innerText = "Incorrecto. Tu racha se ha reiniciado. Vuelve a intentar el ejercicio.";
+        }
+        
+        actualizarHUDVisual(); guardarDatosNavegador();
+        document.getElementById('btn-siguiente').style.display = 'block';
+      }
+
+      function siguienteEjercicio() {
+        prepararPizarra(materiaElegida);
+        panelLectura.style.display = 'none';
+        liberarMundo3D();
+        if (contenidoActual) {
+          pizarra3D.click();
+        }
+      }
+
+      function cerrarModalPregunta() { panelLectura.style.display = 'none'; liberarMundo3D(); prepararPizarra(materiaElegida); }
+
+      function actualizarInterfazBiblioteca() {
+        for (let i = 1; i <= 3; i++) {
+          const btn = document.getElementById(`btn-fase-${i}`);
+          const zonaControles = document.getElementById(`controles-fase-${i}`);
+          
+          if (datosUsuario.faseBiblioteca >= i) {
+            btn.innerText = "Habilitado ✓"; btn.className = "btn-tienda-accion btn-equipado"; btn.disabled = true;
+            if(zonaControles) zonaControles.style.display = "block";
+          } else if (datosUsuario.faseBiblioteca === i - 1) {
+            btn.innerText = `Desbloquear (${costosBiblioteca[i]} 💎)`; btn.className = "btn-tienda-accion btn-comprar"; btn.disabled = false;
+            if(zonaControles) zonaControles.style.display = "none";
+          } else {
+            btn.innerText = "Bloqueado 🔒"; btn.className = "btn-tienda-accion"; btn.disabled = true; btn.style.opacity = "0.4";
+            if(zonaControles) zonaControles.style.display = "none";
+          }
+        }
+      }
+
+      function procesarFaseBiblioteca(fase) {
+        if (datosUsuario.faseBiblioteca === fase - 1) {
+          let costo = costosBiblioteca[fase];
+          if (datosUsuario.gemas >= costo) {
+            datosUsuario.gemas -= costo; datosUsuario.faseBiblioteca = fase;
+            guardarDatosNavegador(); actualizarHUDVisual(); actualizarInterfazBiblioteca();
+            alert(`¡Fase ${fase} Activada con éxito!`);
+          } else { alert("Gemas insuficientes."); }
+        }
+      }
+
+      function cargarImagenMundo(evt) {
+        const file = evt.target.files[0]; if (!file) return;
+        const urlBlob = URL.createObjectURL(file);
+        const el = document.getElementById('cuadro-estudio');
+        el.setAttribute('src', urlBlob);
+        document.getElementById('biblioteca-digital-preview').innerText = `Imagen cargada: ${file.name}`;
+      }
+
+      function cargarVideoMundo(evt) {
+        const file = evt.target.files[0]; if (!file) return;
+        const urlBlob = URL.createObjectURL(file);
+        const cine = document.getElementById('cine-estudio');
+        cine.setAttribute('src', urlBlob);
+        document.getElementById('biblioteca-digital-preview').innerText = `Video cargado: ${file.name}`;
+      }
+
+      function cargarAudioMundo(evt) {
+        const file = evt.target.files[0]; if (!file) return;
+        const urlBlob = URL.createObjectURL(file);
+        let reproductor = document.getElementById('reproductor-bg');
+        if (!reproductor) {
+          reproductor = document.createElement('audio'); reproductor.id = 'reproductor-bg'; reproductor.loop = true;
+          document.body.appendChild(reproductor);
+        }
+        reproductor.src = urlBlob; reproductor.volume = 0.4; reproductor.play();
+        document.getElementById('biblioteca-digital-preview').innerText = `Audio reproduciéndose: ${file.name}`;
+      }
+
+      function cerrarBiblioteca() {
+        panelBiblioteca.style.display = 'none';
+        if(materiaElegida) liberarMundo3D();
+      }
+
+      function verificarEstadoLimiteTiktok() {
+        const hoy = new Date().toISOString().split('T')[0];
+        if (datosUsuario.fechaTiktok !== hoy) { datosUsuario.fechaTiktok = hoy; datosUsuario.contadorTiktok = 0; guardarDatosNavegador(); }
+        const btnTiktok = document.getElementById('btn-recompensa-tiktok');
+        const txtContador = document.getElementById('txt-contador-tiktok');
+        if (datosUsuario.contadorTiktok >= MAX_TIKTOK_DIARIO) {
+          btnTiktok.innerText = "Bloqueado 🔒"; btnTiktok.disabled = true;
+          txtContador.innerText = "Límite diario alcanzado.";
+        } else {
+          btnTiktok.innerText = "Ver Canal 🎬"; btnTiktok.disabled = false;
+          txtContador.innerText = `Apoya y recibe +25 Gemas (${datosUsuario.contadorTiktok}/${MAX_TIKTOK_DIARIO} hoy)`;
+        }
+      }
+
+      function ejecutarMecanicaTiktok() {
+        if (datosUsuario.contadorTiktok >= MAX_TIKTOK_DIARIO) return;
+        datosUsuario.contadorTiktok++; datosUsuario.gemas += 25;
+        guardarDatosNavegador(); actualizarHUDVisual(); verificarEstadoLimiteTiktok();
+        window.open("https://www.tiktok.com/@ozzy.bichito?_r=1&_t=ZS-97G4H87TJrg", "_blank");
+      }
+
+      function abrirTienda() { renderizarTiendaCosmeticos(); verificarEstadoLimiteTiktok(); panelTienda.style.display = 'flex'; congelarMundo3D(); }
+      
+      function renderizarTiendaCosmeticos() {
+        const contenedor = document.getElementById('contenedor-tienda-items'); contenedor.innerHTML = '';
+        
+        ItemsCatalogo.forEach(item => {
+          const div = document.createElement('div'); div.className = 'item-tienda';
+          const comprado = datosUsuario.itemsComprados.includes(item.id);
+          
+          let btnHtml = '';
+          if (item.tipo === 'skin') {
+            const equipado = datosUsuario.itemEquipado === item.id;
+            btnHtml = equipado ? `<button class="btn-tienda-accion btn-equipado">Equipado ✔</button>` : comprado ? `<button class="btn-tienda-accion btn-equipar" onclick="equiparCosmetico('${item.id}')">Equipar</button>` : `<button class="btn-tienda-accion btn-comprar" ${(datosUsuario.monedas >= item.costo)?'':'disabled'} onclick="comprarCosmetico('${item.id}', ${item.costo})">${item.costo} 🪙</button>`;
+          } else if (item.tipo === 'diploma') {
+            btnHtml = comprado ? `<button class="btn-tienda-accion btn-equipado" style="background:#eab308; color:black;">Muro de Honor 🏆</button>` : `<button class="btn-tienda-accion btn-comprar" style="border:1px solid #eab308;" ${(datosUsuario.monedas >= item.costo)?'':'disabled'} onclick="comprarCosmetico('${item.id}', ${item.costo})">${item.costo} 🪙</button>`;
+          }
+
+          let subLabel = item.tipo === 'diploma' ? 'Logro de Alta Gama (Exhibido en Muro)' : 'Diseño Estético de Pupitre';
+          div.innerHTML = `<div class="item-fila-superior"><div class="item-info"><div>${item.nombre}</div><span style="color:#a855f7;">${subLabel}</span></div><div>${btnHtml}</div></div>`;
+          contenedor.appendChild(div);
+        });
+      }
+
+      function comprarCosmetico(id, costo) {
+        if (datosUsuario.monedas >= costo) { 
+          datosUsuario.monedas -= costo; 
+          datosUsuario.itemsComprados.push(id); 
+          if(ItemsCatalogo.find(i => i.id === id).tipo === 'skin') {
+            datosUsuario.itemEquipado = id;
+          }
+          guardarDatosNavegador(); 
+          actualizarHUDVisual(); 
+          actualizarMundoEntorno3D(); 
+          renderizarTiendaCosmeticos(); 
+        }
+      }
+
+      function equiparCosmetico(id) {
+        if (datosUsuario.itemsComprados.includes(id)) { datosUsuario.itemEquipado = id; guardarDatosNavegador(); actualizarMundoEntorno3D(); renderizarTiendaCosmeticos(); }
+      }
+
+      function cerrarTienda() { panelTienda.style.display = 'none'; liberarMundo3D(); }
+
+      function abrirRanking() {
+        let tabla = [
+          { nombre: "Sofía Mendoza", puntos: 2800 },
+          { nombre: "Carlos Albert", puntos: 1950 },
+          { nombre: "Tú (Estudiante)", puntos: datosUsuario.puntosAcumulados, esUsuario: true },
+          { nombre: "Mateo Quispe", puntos: 900 }
+        ].sort((a,b) => b.puntos - a.puntos);
+        const contenedor = document.getElementById('contenedor-ranking-filas'); contenedor.innerHTML = '';
+        tabla.forEach((al, p) => {
+          const div = document.createElement('div'); div.className = `ranking-fila ${al.esUsuario?'usuario-actual':''}`;
+          div.innerHTML = `<div style="display:flex;"><span class="rank-num">#${p+1}</span><span>${al.nombre}</span></div><div>${al.puntos} pts</div>`;
+          contenedor.appendChild(div);
+        });
+        panelRanking.style.display = 'flex'; congelarMundo3D();
+      }
+      function cerrarRanking() { panelRanking.style.display = 'none'; liberarMundo3D(); }
+
+      function congelarMundo3D() {
+        joystickZone.style.display = 'none'; btnVolver.style.display = 'none';
+        btnTiendaAbrir.style.display = 'none'; btnRankAbrir.style.display = 'none'; btnConfigEspacioAbrir.style.display = 'none';
+        escena.pause();
+      }
+      function liberarMundo3D() {
+        joystickZone.style.display = 'block'; btnVolver.style.display = 'block';
+        btnTiendaAbrir.style.display = 'block'; btnRankAbrir.style.display = 'block';
+        if(materiaElegida === 'mi_espacio') btnConfigEspacioAbrir.style.display = 'block';
+        escena.play();
+      }
+      function volverMenuPrincipal() {
+        escena.pause(); rigJugador.components['joystick-movement'].desactivar();
+        joystickZone.style.display = 'none'; btnVolver.style.display = 'none';
+        btnTiendaAbrir.style.display = 'none'; btnRankAbrir.style.display = 'none'; btnConfigEspacioAbrir.style.display = 'none';
+        hudGamificado.style.display = 'none'; panelLectura.style.display = 'none';
+        
+        materiaElegida = null; docenteElegido = null;
+        renderizarSelectorMaterias();
+        pantallaInicio.style.display = 'flex';
+        rigJugador.setAttribute('position', '0 1.6 4.5');
+      }
+    </script>
+  </body>
+</html>
